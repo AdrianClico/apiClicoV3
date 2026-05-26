@@ -1,0 +1,89 @@
+<?php
+
+return [
+
+    'alamo' => [
+        'hubspot' => [
+            'portal_id' => env('ALAMO_HUBSPOT_PORTAL_ID'),
+            'form_id'   => env('ALAMO_HUBSPOT_FORM_ID'),
+        ],
+        'recaptcha_secret' => env('ALAMO_RECAPTCHA_SECRET'),
+    ],
+
+    'baltico' => [
+        'portal_id' => env('BALTICO_HUBSPOT_PORTAL_ID'),
+        'hubspot' => [
+            'contacto' => [
+                'portal_id' => env('BALTICO_HUBSPOT_PORTAL_ID'),
+                'form_id'   => env('BALTICO_HUBSPOT_FORM_CONTACTO'),
+            ],
+            'bolsa' => [
+                'portal_id' => env('BALTICO_HUBSPOT_PORTAL_ID'),
+                'form_id'   => env('BALTICO_HUBSPOT_FORM_BOLSA'),
+            ],
+        ],
+        'recaptcha_secret' => env('BALTICO_RECAPTCHA_SECRET'),
+    ],
+
+    'coa' => [
+        'hubspot' => [
+            'portal_id' => env('COA_HUBSPOT_PORTAL_ID'),
+            'form_id'   => env('COA_HUBSPOT_FORM_ID'),
+        ],
+        'recaptcha_secret' => env('COA_RECAPTCHA_SECRET'),
+    ],
+
+    'cornea' => [
+        'hubspot' => [
+            'portal_id' => env('CORNEA_HUBSPOT_PORTAL_ID'),
+            'form_id'   => env('CORNEA_HUBSPOT_FORM_ID'),
+        ],
+        'recaptcha_secret' => env('CORNEA_RECAPTCHA_SECRET'),
+    ],
+
+    'daryl' => [
+        'mailchimp' => [
+            'api_key'     => env('DARYL_MAILCHIMP_API_KEY'),
+            'server'      => env('DARYL_MAILCHIMP_SERVER'),
+            'audience_id' => env('DARYL_MAILCHIMP_AUDIENCE_ID'),
+        ],
+        'etiquetas' => [
+            101 => 'Eleva el valor de tu nombre',
+            102 => 'Teoria de la felicidad y la innovacion',
+            103 => 'Usa la IA para diversificar tus ingresos y mantenerte relevante',
+            104 => 'Test: Identifica qué está frenando tu libertad profesional hoy',
+        ]
+    ],
+
+    'harteeth' => [
+        'hubspot' => [
+            'portal_id' => env('HARTEETH_HUBSPOT_PORTAL_ID'),
+            'form_id'   => env('HARTEETH_HUBSPOT_FORM_ID'),
+        ],
+        'recaptcha_secret' => env('HARTEETH_RECAPTCHA_SECRET'),
+    ],
+
+    'integra' => [
+        'hubspot' => [
+            'portal_id' => env('INTEGRA_HUBSPOT_PORTAL_ID'),
+            'form_id'   => env('INTEGRA_HUBSPOT_FORM_ID'),
+        ],
+        'recaptcha_secret' => env('INTEGRA_RECAPTCHA_SECRET'),
+    ],
+
+    'jupplo' => [
+        'hubspot' => [
+            'portal_id' => env('JUPPLO_HUBSPOT_PORTAL_ID'),
+            'form_id'   => env('JUPPLO_HUBSPOT_FORM_ID'),
+        ],
+        'recaptcha_secret' => env('JUPPLO_RECAPTCHA_SECRET'),
+    ],
+
+    'maquiteck' => [
+        'hubspot' => [
+            'portal_id' => env('MAQUITECK_HUBSPOT_PORTAL_ID'),
+            'form_id'   => env('MAQUITECK_HUBSPOT_FORM_ID'),
+        ],
+        'recaptcha_secret' => env('MAQUITECK_RECAPTCHA_SECRET'),
+    ],
+];
