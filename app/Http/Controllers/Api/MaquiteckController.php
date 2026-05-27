@@ -5,16 +5,16 @@ namespace App\Http\Controllers\Api;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
-use App\Contracts\LeadCaptureDriverInterface;
+use App\Contracts\CrmDriverInterface;
 use App\Helpers\HelpFunctions;
 
 class MaquiteckController extends Controller
 {
-    protected LeadCaptureDriverInterface $leadCapture;
+    protected CrmDriverInterface $crm;
 
-    public function __construct(LeadCaptureDriverInterface $leadCapture)
+    public function __construct(CrmDriverInterface $crm)
     {
-        $this->leadCapture = $leadCapture;
+        $this->crm = $crm;
     }
 
     public function enviar(Request $request): JsonResponse
@@ -43,7 +43,7 @@ class MaquiteckController extends Controller
         // 2. Filtro de Seguridad: reCAPTCHA centralizado
         $recaptchaSecret = config('clients.maquiteck.recaptcha_secret');
         if (!HelpFunctions::verificarRecaptcha($request->input('g-recaptcha-response'), $recaptchaSecret)) {
-            return response()->json(['status' => 'error', 'message' => 'Captcha inválido'], 422);
+            return response()->json([ 'status' => 'error', 'message' => 'Captcha inválido' ], 422);
         }
 
         // 3. Procesar y segmentar nombre completo
@@ -59,8 +59,8 @@ class MaquiteckController extends Controller
             $metrosValue = $request->input('area_terracerias') . ' m²';
         }
 
-        // 5. Mapeo de propiedades
-        $leadData = [
+        // 5. Mapeo de campos limpios para HubSpot (Fusión de datos con el tracking analítico interno)
+        $packet = [
             'firstname'               => $nameParts['firstname'],
             'lastname'                => $nameParts['lastname'],
             'email'                   => $request->input('email'),
@@ -76,21 +76,19 @@ class MaquiteckController extends Controller
             'acarreo_metros'          => $request->input('acarreo_metros'),
             'tipo_de_tiro'            => $request->input('tiro'),
             'metros'                  => $metrosValue,
-        ];
-
-        // 6. Paquete de cookies y analítica para el formulario
-        $trackingData = [
-            'hubspotutk' => $request->cookie('hubspotutk') ?? $request->input('hubspotutk'),
-            'ip_address' => $request->ip(),
-            'page_uri'   => $request->headers->get('referer') ?? url()->current(),
-            'page_name'  => 'Formulario de contacto Maquiteck'
+            'tracking'                => [
+                'hubspotutk' => $request->cookie('hubspotutk') ?? $request->input('hubspotutk'),
+                'ip_address' => $request->ip(),
+                'page_uri'   => $request->headers->get('referer') ?? url()->current(),
+                'page_name'  => 'Formulario de contacto Maquiteck'
+            ]
         ];
 
         // 7. Configuración del cliente
         $config = config('clients.maquiteck.hubspot');
 
-        // 8. Envío a la interfaz
-        $result = $this->leadCapture->submitLead($leadData, $trackingData, $config);
+        // 8. Envío a la interfaz unificada
+        $result = $this->crm->submitLead($packet, $config);
 
         // 9. Respuesta estandarizada
         if (!$result['success']) {

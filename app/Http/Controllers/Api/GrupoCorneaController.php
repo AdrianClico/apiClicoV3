@@ -5,16 +5,16 @@ namespace App\Http\Controllers\Api;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
-use App\Contracts\LeadCaptureDriverInterface;
+use App\Contracts\CrmDriverInterface;
 use App\Helpers\HelpFunctions;
 
 class GrupoCorneaController extends Controller
 {
-    protected LeadCaptureDriverInterface $leadCapture;
+    protected CrmDriverInterface $crm;
 
-    public function __construct(LeadCaptureDriverInterface $leadCapture)
+    public function __construct(CrmDriverInterface $crm)
     {
-        $this->leadCapture = $leadCapture;
+        $this->crm = $crm;
     }
 
     public function enviar(Request $request): JsonResponse
@@ -34,37 +34,35 @@ class GrupoCorneaController extends Controller
         // 2. Lectura de captcha
         $recaptchaSecret = config('clients.cornea.recaptcha_secret');
         if (!HelpFunctions::verificarRecaptcha($request->input('g-recaptcha-response'), $recaptchaSecret)) {
-            return response()->json(['status' => 'error', 'message' => 'Captcha inválido'], 422);
+            return response()->json([ 'status' => 'error', 'message' => 'Captcha inválido' ], 422);
         }
 
         // 3. Función helper para separar nombre y apellido
         $nameParts = HelpFunctions::splitName($request->input('name'));
 
-        // 4. Mapeo de campos limpios acoplados a las propiedades de HubSpot
-        $leadData = [
+        // 4. Mapeo de campos limpios para HubSpot (Fusión de datos con el tracking analítico interno)
+        $packet = [
             'firstname'                => $nameParts['firstname'],
             'lastname'                 => $nameParts['lastname'],
             'email'                    => $request->input('email'),
             'hs_whatsapp_phone_number' => $request->input('phone'),
             'servicio'                 => $request->input('servicio'),
-            'comentarios'              => $request->input('comments'),
+            'comentarios'              => $request->input('comentarios'),
             'cirugia'                  => $request->input('cirugia'),
             'consulta'                 => $request->input('consulta'),
-        ];
-
-        // 5. Cookie de seguimiento de formularios
-        $trackingData = [
-            'hubspotutk' => $request->cookie('hubspotutk') ?? $request->input('hubspotutk'),
-            'ip_address' => $request->ip(),
-            'page_uri'   => $request->headers->get('referer') ?? url()->current(),
-            'page_name'  => 'Agenda una cita Grupo Cornea'
+            'tracking'                 => [
+                'hubspotutk' => $request->cookie('hubspotutk') ?? $request->input('hubspotutk'),
+                'ip_address' => $request->ip(),
+                'page_uri'   => $request->headers->get('referer') ?? url()->current(),
+                'page_name'  => 'Agenda una cita Grupo Cornea'
+            ]
         ];
 
         // 6. Configuración del cliente
         $config = config('clients.cornea.hubspot');
 
         // 7. Envío a la interfaz
-        $result = $this->leadCapture->submitLead($leadData, $trackingData, $config);
+        $result = $this->crm->submitLead($packet, $config);
 
         // 8. Respuesta estandarizada al frontend
         if (!$result['success']) {

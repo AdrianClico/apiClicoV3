@@ -2,15 +2,15 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Contracts\CrmDriverInterface;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
-use App\Contracts\LeadCaptureDriverInterface;
 use App\Helpers\HelpFunctions;
 
 class AlamoController extends Controller
 {
-    protected LeadCaptureDriverInterface $leadCapture;
+    protected CrmDriverInterface $crm;
 
     // Catálogo estático de atribución para las Landing Pages de Alamo B2B
     private const LANDING_PAGE_MAP = [
@@ -27,9 +27,9 @@ class AlamoController extends Controller
         'en_empresas_alamo_leasing'       => 'Página Empresas Leasing Inglés',
     ];
 
-    public function __construct(LeadCaptureDriverInterface $leadCapture)
+    public function __construct(CrmDriverInterface $crm)
     {
-        $this->leadCapture = $leadCapture;
+        $this->crm = $crm;
     }
 
     public function enviar(Request $request): JsonResponse
@@ -51,14 +51,14 @@ class AlamoController extends Controller
         // 2. Lectura de captcha
         $recaptchaSecret = config('clients.alamo.recaptcha_secret');
         if (!HelpFunctions::verificarRecaptcha($request->input('g-recaptcha-response'), $recaptchaSecret)) {
-            return response()->json(['status' => 'error', 'message' => 'Captcha inválido'], 422);
+            return response()->json([ 'status' => 'error', 'message' => 'Captcha inválido' ], 422);
         }
 
         // 3. Función helper para separar nombre y apellido
         $nameParts = HelpFunctions::splitName($request->input('nombre'));
 
         // 4. Lógica de Propiedad Municipio en HubSpot
-        $campoMunicipio = 'municipio'; //
+        $campoMunicipio = 'municipio';
         $mapaCampos = [
             'Aguascalientes'                  => 'municipios_aguascalientes',
             'Baja California'                 => 'municipios_baja_california',
@@ -102,8 +102,8 @@ class AlamoController extends Controller
         $landingPageKey = $request->input('landing_page');
         $pageName       = self::LANDING_PAGE_MAP[$landingPageKey] ?? 'Alamo Formulario Web';
 
-        // 6. Mapeo de campos limpios acoplados a las propiedades de HubSpot
-        $leadData = [
+        // 6. Mapeo de campos limpios para HubSpot (Fusión de datos con el tracking analítico interno)
+        $packet = [
             'firstname'           => $nameParts['firstname'],
             'lastname'            => $nameParts['lastname'],
             'email'               => $request->input('correo'),
@@ -114,22 +114,20 @@ class AlamoController extends Controller
             'puesto'              => $request->input('puesto'),
             'company'             => $request->input('empresa'),
             'giro_industria'      => $request->input('giro'),
-            'lp_referencia'       => $landingPageKey
-        ];
-
-        // 7. Cookie de seguimiento de formularios
-        $trackingData = [
-            'hubspotutk' => $request->cookie('hubspotutk') ?? $request->input('hubspotutk'),
-            'ip_address' => $request->ip(),
-            'page_uri'   => $request->headers->get('referer') ?? url()->current(),
-            'page_name'  => $pageName
+            'lp_referencia'       => $landingPageKey,
+            'tracking'            => [
+                'hubspotutk' => $request->cookie('hubspotutk') ?? $request->input('hubspotutk'),
+                'ip_address' => $request->ip(),
+                'page_uri'   => $request->headers->get('referer') ?? url()->current(),
+                'page_name'  => $pageName
+            ]
         ];
 
         // 8. Configuracion del cliente
         $config = config('clients.alamo.hubspot');
 
-        // 9. Envío a la interfaz
-        $result = $this->leadCapture->submitLead($leadData, $trackingData, $config);
+        // 9. Envío a la interfaz unificada
+        $result = $this->crm->submitLead($packet, $config);
 
         // 10. Respuesta estandarizada al frontend
         if (!$result['success']) {

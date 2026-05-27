@@ -26,13 +26,13 @@ class DarylAndradeController extends Controller
     {
         // 1. Validación del request
         $data = $request->validate([
-            'nombre'   => ['required', 'string', 'max:80'],
-            'apellido' => ['required', 'string', 'max:80'],
-            'email'    => ['required', 'email', 'max:255'],
-            'telefono' => ['nullable', 'string', 'max:30'],
-            'empresa'  => ['nullable', 'string', 'max:120'],
-            'tag_id'   => ['required', 'integer'],
-            'privacy'  => ['accepted'],
+            'nombre'   => [ 'required', 'string', 'max:80' ],
+            'apellido' => [ 'required', 'string', 'max:80' ],
+            'email'    => [ 'required', 'email', 'max:255' ],
+            'telefono' => [ 'nullable', 'string', 'max:30' ],
+            'empresa'  => [ 'nullable', 'string', 'max:120' ],
+            'tag_id'   => [ 'required', 'integer' ],
+            'privacy'  => [ 'accepted' ],
         ]);
 
         // 2. Traducir el tag_id que viene del frontend al nombre real en Mailchimp
@@ -44,24 +44,24 @@ class DarylAndradeController extends Controller
             ], 422);
         }
 
-        // 3. Empaquetar dato para driver
+        // 3. Empaquetar datos bajo el estándar plano de nuestra interfaz universal
         $packet = [
-            'email'        => $data['email'],
-            'merge_fields' => [
-                'FNAME'   => $data['nombre'],
-                'LNAME'   => $data['apellido'],
-                'PHONE'   => $data['telefono'] ?? null,
-                'COMPANY' => $data['empresa'] ?? null,
-            ],
-            'tags' => [
-                'Workshop',
-                $tagName
+            'firstname'     => $data['nombre'],
+            'lastname'      => $data['apellido'],
+            'email'         => $data['email'],
+            'phone'         => $data['telefono'] ?? null,
+            'company'       => $data['empresa'] ?? null,
+            'custom_fields' => [
+                'tags' => [
+                    'Workshop',
+                    $tagName
+                ]
             ]
         ];
 
-        // 4. Configuracion de Cliente
+        // 4. Configuracion de Cliente e invocación del método rey
         $config = config('clients.daryl.mailchimp');
-        $result = $this->crm->createContact($packet, $config);
+        $result = $this->crm->submitLead($packet, $config);
 
         // 5. Respuesta estandarizada al frontend
         if (!$result['success']) {
@@ -86,8 +86,8 @@ class DarylAndradeController extends Controller
     {
         // 1. Validación del Request
         $data = $request->validate([
-            'email'  => ['required', 'email', 'max:255'],
-            'perfil' => ['required'],
+            'email'  => [ 'required', 'email', 'max:255' ],
+            'perfil' => [ 'required' ],
         ]);
 
         // 2. Resolver la etiqueta fija de diagnóstico (ID: 104)
@@ -99,20 +99,20 @@ class DarylAndradeController extends Controller
             ], 422);
         }
 
-        // 3. Preparar el paquete de datos para el test
+        // 3. Preparar el paquete plano inyectando el perfil personalizado en custom_fields
         $packet = [
-            'email'        => $data['email'],
-            'merge_fields' => [
+            'email'         => $data['email'],
+            'custom_fields' => [
                 'MMERGE9' => $data['perfil'],
-            ],
-            'tags' => [
-                $tagName
+                'tags'    => [
+                    $tagName
+                ]
             ]
         ];
 
-        // 4. Configuracion
+        // 4. Configuracion e invocación del método rey de forma agnóstica
         $config = config('clients.daryl.mailchimp');
-        $result = $this->crm->createContact($packet, $config);
+        $result = $this->crm->submitLead($packet, $config);
 
         // 5. Respuesta estandarizada al frontend
         if (!$result['success']) {
