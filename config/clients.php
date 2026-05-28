@@ -63,6 +63,59 @@ return [
         'recaptcha_secret' => env('HARTEETH_RECAPTCHA_SECRET'),
     ],
 
+    'iberosaltillo' => [
+        'activecampaign' => [
+            'url'               => env('IBEROSALTILLO_AC_URL'),
+            'token'             => env('IBEROSALTILLO_AC_TOKEN'),
+            'lists'             => [1],
+            'tags'              => [12],
+            'field_nuevo_value' => '1. Nuevo'
+        ],
+        'recaptcha_secret' => env('IBEROSALTILLO_RECAPTCHA_SECRET'),
+    ],
+
+    'iberotorreon' => [
+        'activecampaign' => [
+            'url'         => env('IBEROTORREON_AC_URL'),
+            'token'       => env('IBEROTORREON_AC_TOKEN'),
+            'lists'       => [10],
+            'pipeline_id' => 5,
+            'stage_id'    => 47,
+            'owner_id'    => 1,
+        ],
+        'contact_fields' => [
+            'departamento'    => 12,
+            'area'            => 17,
+            'nivel_academico' => 1,
+            'programa'        => 2,
+            // UTMs de Contacto de Torreón
+            'utm_medium'      => 28,
+            'utm_campaign'    => 29,
+            'utm_source'      => 30,
+            'utm_term'        => 31,
+            'utm_content'     => 32,
+            // Campos extra del formulario de Torreón
+            'profession'      => 33,
+            'comments'        => 9,
+            'pref_contact'    => 38,
+            'another_program' => 3,
+        ],
+        'deal_fields' => [
+            'departamento' => 7,
+            'area'         => 8,
+            'oferta'       => 9,
+            'programa'     => 6,
+            'modalidad'    => 12,
+            'costo'        => 10,
+            'fecha_inicio' => 11,
+            'horario'      => 13,
+        ],
+        'tags_by_source' => [
+            'Kino'             => [3, 8, 31],
+            'diplomado_evento' => [3, 8, 32],
+        ]
+    ],
+
     'integra' => [
         'hubspot' => [
             'portal_id' => env('INTEGRA_HUBSPOT_PORTAL_ID'),
@@ -85,5 +138,15 @@ return [
             'form_id'   => env('MAQUITECK_HUBSPOT_FORM_ID'),
         ],
         'recaptcha_secret' => env('MAQUITECK_RECAPTCHA_SECRET'),
+    ],
+
+    'mercadomedico' => [
+        'odoo' => [
+            'url'      => env('MERCADOMEDICO_ODOO_URL'),
+            'db'       => env('MERCADOMEDICO_ODOO_DB'),
+            'username' => env('MERCADOMEDICO_ODOO_USER'),
+            'password' => env('MERCADOMEDICO_ODOO_PASSWORD'),
+        ],
+        'recaptcha_secret' => env('MERCADOMEDICO_RECAPTCHA_SECRET'),
     ],
 ];

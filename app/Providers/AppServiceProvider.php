@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Services\Crm\ActiveCampaignDriver;
 use Illuminate\Support\ServiceProvider;
 
 use App\Contracts\CrmDriverInterface;
@@ -17,6 +18,8 @@ use App\Http\Controllers\Api\DarylAndradeController;
 use App\Http\Controllers\Api\GrupoCorneaController;
 use App\Http\Controllers\Api\GrupoJupploController;
 use App\Http\Controllers\Api\HarteethController;
+use App\Http\Controllers\Api\IberoSaltilloController;
+use App\Http\Controllers\Api\IberoTorreonController;
 use App\Http\Controllers\Api\IntegraProtectionController;
 use App\Http\Controllers\Api\MaquiteckController;
 use App\Http\Controllers\Api\MercadoMedicoController;
@@ -62,6 +65,16 @@ class AppServiceProvider extends ServiceProvider
         $this->app->when(HarteethController::class)
             ->needs(CrmDriverInterface::class)
             ->give(HubSpotDriver::class);
+
+        // I -> Ibero Saltillo
+        $this->app->when(IberoSaltilloController::class)
+            ->needs(\App\Contracts\CrmDriverInterface::class)
+            ->give(ActiveCampaignDriver::class);
+
+        // I -> Ibero Torreón
+        $this->app->when(IberoTorreonController::class)
+            ->needs(CrmDriverInterface::class)
+            ->give(ActiveCampaignDriver::class);
 
         // I -> Integra Protection (HubSpot)
         $this->app->when(IntegraProtectionController::class)
