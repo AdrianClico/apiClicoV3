@@ -68,7 +68,7 @@ class AppServiceProvider extends ServiceProvider
 
         // I -> Ibero Saltillo
         $this->app->when(IberoSaltilloController::class)
-            ->needs(\App\Contracts\CrmDriverInterface::class)
+            ->needs(CrmDriverInterface::class)
             ->give(ActiveCampaignDriver::class);
 
         // I -> Ibero Torreón
