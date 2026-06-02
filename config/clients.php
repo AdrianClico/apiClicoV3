@@ -3,6 +3,7 @@
 return [
 
     'alamo' => [
+        'api_token' => env('ALAMO_API_TOKEN'),
         'hubspot' => [
             'portal_id' => env('ALAMO_HUBSPOT_PORTAL_ID'),
             'form_id'   => env('ALAMO_HUBSPOT_FORM_ID'),
@@ -11,6 +12,7 @@ return [
     ],
 
     'baltico' => [
+        'api_token' => env('BALTICO_API_TOKEN'),
         'portal_id' => env('BALTICO_HUBSPOT_PORTAL_ID'),
         'hubspot' => [
             'contacto' => [
@@ -26,6 +28,7 @@ return [
     ],
 
     'coa' => [
+        'api_token' => env('COA_API_TOKEN'),
         'hubspot' => [
             'portal_id' => env('COA_HUBSPOT_PORTAL_ID'),
             'form_id'   => env('COA_HUBSPOT_FORM_ID'),
@@ -34,6 +37,7 @@ return [
     ],
 
     'cornea' => [
+        'api_token' => env('CORNEA_API_TOKEN'),
         'hubspot' => [
             'portal_id' => env('CORNEA_HUBSPOT_PORTAL_ID'),
             'form_id'   => env('CORNEA_HUBSPOT_FORM_ID'),
@@ -42,6 +46,7 @@ return [
     ],
 
     'daryl' => [
+        'api_token' => env('DARYL_API_TOKEN'),
         'mailchimp' => [
             'api_key'     => env('DARYL_MAILCHIMP_API_KEY'),
             'server'      => env('DARYL_MAILCHIMP_SERVER'),
@@ -56,6 +61,7 @@ return [
     ],
 
     'harteeth' => [
+        'api_token' => env('HARTEETH_API_TOKEN'),
         'hubspot' => [
             'portal_id' => env('HARTEETH_HUBSPOT_PORTAL_ID'),
             'form_id'   => env('HARTEETH_HUBSPOT_FORM_ID'),
@@ -64,6 +70,7 @@ return [
     ],
 
     'hipotecaperfecta' => [
+        'api_token'        => env('HIPOTECA_PERFECTA_API_TOKEN'),
         'activecampaign' => [
             'url'   => env('HIPOTECA_AC_URL'),
             'token' => env('HIPOTECA_AC_TOKEN'),
@@ -74,6 +81,7 @@ return [
     ],
 
     'iberosaltillo' => [
+        'api_token' => env('IBEROSALTILLO_API_TOKEN'),
         'activecampaign' => [
             'url'               => env('IBEROSALTILLO_AC_URL'),
             'token'             => env('IBEROSALTILLO_AC_TOKEN'),
@@ -85,6 +93,7 @@ return [
     ],
 
     'iberotorreon' => [
+        'api_token' => env('IBERO_TORREON_API_TOKEN'),
         'activecampaign' => [
             'url'         => env('IBEROTORREON_AC_URL'),
             'token'       => env('IBEROTORREON_AC_TOKEN'),
@@ -98,13 +107,11 @@ return [
             'area'            => 17,
             'nivel_academico' => 1,
             'programa'        => 2,
-            // UTMs de Contacto de Torreón
             'utm_medium'      => 28,
             'utm_campaign'    => 29,
             'utm_source'      => 30,
             'utm_term'        => 31,
             'utm_content'     => 32,
-            // Campos extra del formulario de Torreón
             'profession'      => 33,
             'comments'        => 9,
             'pref_contact'    => 38,
@@ -127,6 +134,7 @@ return [
     ],
 
     'integra' => [
+        'api_token' => env('INTEGRA_API_TOKEN'),
         'hubspot' => [
             'portal_id' => env('INTEGRA_HUBSPOT_PORTAL_ID'),
             'form_id'   => env('INTEGRA_HUBSPOT_FORM_ID'),
@@ -135,6 +143,7 @@ return [
     ],
 
     'jupplo' => [
+        'api_token' => env('JUPPLO_API_TOKEN'),
         'hubspot' => [
             'portal_id' => env('JUPPLO_HUBSPOT_PORTAL_ID'),
             'form_id'   => env('JUPPLO_HUBSPOT_FORM_ID'),
@@ -143,6 +152,7 @@ return [
     ],
 
     'maquiteck' => [
+        'api_token' => env('MAQUITECK_API_TOKEN'),
         'hubspot' => [
             'portal_id' => env('MAQUITECK_HUBSPOT_PORTAL_ID'),
             'form_id'   => env('MAQUITECK_HUBSPOT_FORM_ID'),
@@ -151,6 +161,7 @@ return [
     ],
 
     'mercadomedico' => [
+        'api_token' => env('MERCADOMEDICO_API_TOKEN'),
         'odoo' => [
             'url'      => env('MERCADOMEDICO_ODOO_URL'),
             'db'       => env('MERCADOMEDICO_ODOO_DB'),
@@ -161,6 +172,7 @@ return [
     ],
 
     'remar' => [
+        'api_token' => env('REMAR_API_TOKEN'),
         'hubspot' => [
             'portal_id' => env('REMAR_HUBSPOT_PORTAL_ID'),
             'form_id'   => env('REMAR_HUBSPOT_FORM_ID'),
@@ -169,6 +181,7 @@ return [
     ],
 
     'retiroestrategico' => [
+        'api_token'        => env('RETIRO_ESTRATEGICO_API_TOKEN'),
         'hubspot' => [
             'portal_id' => env('RETIRO_HUBSPOT_PORTAL_ID'),
             'form_id'   => env('RETIRO_HUBSPOT_FORM_ID'),
@@ -177,6 +190,7 @@ return [
     ],
 
     'tradelossa' => [
+        'api_token'        => env('TRADELOSSA_API_TOKEN'),
         'hubspot' => [
             'portal_id'      => env('TRADELOSSA_HUBSPOT_PORTAL_ID'),
             'form_contacto'  => env('TRADELOSSA_HUBSPOT_FORM_CONTACTO'),
@@ -186,6 +200,7 @@ return [
     ],
 
     'vijusa' => [
+        'api_token'        => env('VIJUSA_API_TOKEN'),
         'copper' => [
             'url'             => env('VIJUSA_COPPER_URL'),
             'token'           => env('VIJUSA_COPPER_TOKEN'),
