@@ -2,11 +2,12 @@
 
 namespace App\Providers;
 
-use App\Services\Crm\ActiveCampaignDriver;
 use Illuminate\Support\ServiceProvider;
 
 use App\Contracts\CrmDriverInterface;
 
+use App\Services\Crm\ActiveCampaignDriver;
+use App\Services\Crm\CopperDriver;
 use App\Services\Crm\HubSpotDriver;
 use App\Services\Crm\MailchimpDriver;
 use App\Services\Crm\OdooDriver;
@@ -18,11 +19,16 @@ use App\Http\Controllers\Api\DarylAndradeController;
 use App\Http\Controllers\Api\GrupoCorneaController;
 use App\Http\Controllers\Api\GrupoJupploController;
 use App\Http\Controllers\Api\HarteethController;
+use App\Http\Controllers\Api\HipotecaPerfectaController;
 use App\Http\Controllers\Api\IberoSaltilloController;
 use App\Http\Controllers\Api\IberoTorreonController;
 use App\Http\Controllers\Api\IntegraProtectionController;
 use App\Http\Controllers\Api\MaquiteckController;
 use App\Http\Controllers\Api\MercadoMedicoController;
+use App\Http\Controllers\Api\RemarController;
+use App\Http\Controllers\Api\RetiroEstrategicoController;
+use App\Http\Controllers\Api\TradelossaController;
+use App\Http\Controllers\Api\VijusaController;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -66,6 +72,11 @@ class AppServiceProvider extends ServiceProvider
             ->needs(CrmDriverInterface::class)
             ->give(HubSpotDriver::class);
 
+        // H -> Hipoteca Perfecta (ActiveCampaign)
+        $this->app->when(HipotecaPerfectaController::class)
+            ->needs(CrmDriverInterface::class)
+            ->give(ActiveCampaignDriver::class);
+
         // I -> Ibero Saltillo
         $this->app->when(IberoSaltilloController::class)
             ->needs(CrmDriverInterface::class)
@@ -90,6 +101,26 @@ class AppServiceProvider extends ServiceProvider
         $this->app->when(MercadoMedicoController::class)
             ->needs(CrmDriverInterface::class)
             ->give(OdooDriver::class);
+
+        // R -> Remar (HubSpot)
+        $this->app->when(RemarController::class)
+            ->needs(CrmDriverInterface::class)
+            ->give(HubSpotDriver::class);
+
+        // R -> Retiro Estratégico (HubSpot)
+        $this->app->when(RetiroEstrategicoController::class)
+            ->needs(CrmDriverInterface::class)
+            ->give(HubSpotDriver::class);
+
+        // T -> Tradelossa (HubSpot)
+        $this->app->when(TradelossaController::class)
+            ->needs(CrmDriverInterface::class)
+            ->give(HubSpotDriver::class);
+
+        // T -> Tradelossa (HubSpot)
+        $this->app->when(VijusaController::class)
+            ->needs(CrmDriverInterface::class)
+            ->give(CopperDriver::class);
     }
 
     /**

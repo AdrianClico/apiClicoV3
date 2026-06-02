@@ -63,6 +63,16 @@ return [
         'recaptcha_secret' => env('HARTEETH_RECAPTCHA_SECRET'),
     ],
 
+    'hipotecaperfecta' => [
+        'activecampaign' => [
+            'url'   => env('HIPOTECA_AC_URL'),
+            'token' => env('HIPOTECA_AC_TOKEN'),
+            'tags'  => [74], // ID de 'Web-VSL'
+            'lists' => [16], // ID de 'Clientes Problemas Financieros'
+        ],
+        'recaptcha_secret' => env('HIPOTECA_RECAPTCHA_SECRET'),
+    ],
+
     'iberosaltillo' => [
         'activecampaign' => [
             'url'               => env('IBEROSALTILLO_AC_URL'),
@@ -148,5 +158,41 @@ return [
             'password' => env('MERCADOMEDICO_ODOO_PASSWORD'),
         ],
         'recaptcha_secret' => env('MERCADOMEDICO_RECAPTCHA_SECRET'),
+    ],
+
+    'remar' => [
+        'hubspot' => [
+            'portal_id' => env('REMAR_HUBSPOT_PORTAL_ID'),
+            'form_id'   => env('REMAR_HUBSPOT_FORM_ID'),
+        ],
+        'recaptcha_secret' => env('REMAR_RECAPTCHA_SECRET'),
+    ],
+
+    'retiroestrategico' => [
+        'hubspot' => [
+            'portal_id' => env('RETIRO_HUBSPOT_PORTAL_ID'),
+            'form_id'   => env('RETIRO_HUBSPOT_FORM_ID'),
+        ],
+        'recaptcha_secret' => env('RETIRO_RECAPTCHA_SECRET'),
+    ],
+
+    'tradelossa' => [
+        'hubspot' => [
+            'portal_id'      => env('TRADELOSSA_HUBSPOT_PORTAL_ID'),
+            'form_contacto'  => env('TRADELOSSA_HUBSPOT_FORM_CONTACTO'),
+            'form_cotizacion'=> env('TRADELOSSA_HUBSPOT_FORM_COTIZACION'),
+        ],
+        'recaptcha_secret' => env('TRADELOSSA_RECAPTCHA_SECRET'),
+    ],
+
+    'vijusa' => [
+        'copper' => [
+            'url'             => env('VIJUSA_COPPER_URL'),
+            'token'           => env('VIJUSA_COPPER_TOKEN'),
+            'user_email'      => env('VIJUSA_COPPER_USER'),
+            'contact_type_id' => 2089772,
+            'assignee_id'     => 3005,
+        ],
+        'recaptcha_secret' => env('VIJUSA_RECAPTCHA_SECRET'),
     ],
 ];
