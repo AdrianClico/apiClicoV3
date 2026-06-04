@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class EstadoMunicipio extends Model
 {
+    protected $connection = 'helpers';
+
     protected $table = 'estadosmunicipios';
 
     public $timestamps = false;
@@ -14,9 +16,4 @@ class EstadoMunicipio extends Model
         'estado',
         'municipio'
     ];
-
-    public function getConnectionName(): string
-    {
-        return config('database.connections.helpers') ? 'helpers' : config('database.default');
-    }
 }
