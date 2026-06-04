@@ -1,5 +1,5 @@
 <FilesMatch \.(php|phar)$>
-    SetHandler "proxy:fcgi://localhost"
+    SetHandler "proxy:unix:/opt/alt/php82/usr/var/run/php-fpm.sock"
 </FilesMatch>
 
 <IfModule mod_rewrite.c>
